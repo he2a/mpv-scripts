@@ -1,6 +1,6 @@
 # mpv-scripts
-Couple of lua scripts for personal use in mpv. Work in progress. 
+Couple of lua scripts for personal use in mpv. Currently work in progress. 
 
 To-do list:
-Add noise filters to afilter.lua
-New minimal stats.lua
+- Add noise filters to afilter.lua
+- New minimal stats.lua
