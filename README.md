@@ -1,6 +1,29 @@
 # mpv-scripts
-Couple of lua scripts for personal use in mpv. Currently work in progress. 
+A small collection of lua scripts for use in mpv player. Refer to mpv documentation on how to use a lua script in mpv.
 
-To-do list:
-- Add noise filters to afilter.lua
-- New minimal stats.lua
+## afilter.lua
+Lua script for togglable customizable parametric equalizer and dynamic range compressor with more filter support coming in future.
+```
+Options:
+preamp: Set preamp to avoid audio clipping.
+bands : Add {freq = <frequency>, width = {'<type>', <value>}, gain = <gain>}, for each modification of frequency.
+        freq : Set the filter’s central frequency in Hz.
+        width: Set the bandwidth of filter.
+               type : Set method to specify bandwidth. (h for Hz, q for Q-Factor, o for Octave, s for Slope)
+               value: Set the magnitude of the bandwidth.
+        gain : Set the required gain or attenuation in dB.
+
+drc: Enable to compress the dynamic range of audio resulting in quieter parts getting louder.
+     ratio    : Ratio by which the signal is changed.
+     attack   : Amount of ms the signal has to rise above the threshold before it triggers.
+     release  : Amount of ms the signal has to fall below the threshold before it is restored.
+     makeup   : Amount in dB the signal will be amplified after processing.
+     knee     : Curve the sharp knee around threshold dB to enter gain reduction more softly. 
+     threshold: Triggered if signal in dB rises above this level.
+	 
+eq_enabled : Start with equalizer enabled.
+drc_enabled: Start with compressor enabled.
+```
+
+## sview.lua
+A simple script to show multiple shaders running, in a clean list. Triggered on shader activation or by toggle button.
