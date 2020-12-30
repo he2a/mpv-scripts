@@ -6,7 +6,7 @@ Lua script for togglable customizable parametric equalizer and dynamic range com
 ```
 Options:
 preamp: Set preamp to avoid audio clipping.
-bands : Add {freq = <frequency>, width = {'<type>', <value>}, gain = <gain>}, for each modification of frequency.
+bands : Add {freq = <frequency>, width = {'<type>', <value>}, gain = <gain>}, for each frequency.
         freq : Set the filter’s central frequency in Hz.
         width: Set the bandwidth of filter.
                type : Set method to specify bandwidth. (h for Hz, q for Q-Factor, o for Octave, s for Slope)
