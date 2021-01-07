@@ -1,6 +1,6 @@
 --[[
 
-A simple lua script for togglable equalizer, dynamic range compressor and 
+A simple lua script for togglable equalizer, dynamic range compressor, stereo downmix and 
 other filters yet to come.
 
 Options:
@@ -33,6 +33,7 @@ drc: Enable to compress the dynamic range of audio resulting in quieter parts
 	 
 eq_enabled : Start with equalizer enabled.
 drc_enabled: Start with compressor enabled.
+dm_enabled : Start with stereo downmix enabled.
 
 --]]
 
@@ -67,7 +68,7 @@ local bands = {
 
 local drc = {
   threshold = -20,
-  ratio = 2,
+  ratio = 4,
   attack = 20,
   release = 250,
   makeup = 8,
@@ -76,8 +77,18 @@ local drc = {
 
 local eq_enabled = true
 local drc_enabled = false
+local dm_enabled = false
 
 -- Code --
+
+local function check_channel()
+  local c = mp.get_property_number('audio-params/channel-count')
+  if not c then 
+	return 0
+  else
+    return c
+  end
+end
 
 local function push_preamp()
   if eq_enabled then 
@@ -103,6 +114,21 @@ local function push_drc()
   end
 end
 
+local function push_dm(chn)
+  local filter
+  if chn < 7 then
+    filter = 'pan=stereo|FL=0.5*FC+0.707*FL+0.707*BL+0.5*LFE|FR=0.5*FC+0.707*FR+0.707*BR+0.5*LFE'
+  else
+	filter = 'pan=stereo|FL<0.5*FC+0.3*FLC+0.3*FL+0.3*BL+0.3*SL+0.5*LFE|FR<0.5*FC+0.3*FRC+0.3*FR+0.3*BR+0.3*SR+0.5*LFE'
+  end
+  
+  if dm_enabled then 
+    return 'no-osd af add lavfi=[' .. filter .. ']'
+  else
+    return 'no-osd af remove lavfi=[' .. filter .. ']'
+  end
+end
+
 local function updateEQ()
   if preamp ~= 0 then mp.command(push_preamp()) end
   for i = 1, #bands do
@@ -125,16 +151,25 @@ local function toggle_eq()
   if eq_enabled then mp.osd_message("Equalizer ON") else mp.osd_message("Equalizer OFF") end
 end
 
-local function init_filters()
-  if eq_enabled then 
-    updateEQ()
-  end
-  if drc_enabled then 
-    mp.command(push_drc(f))
+local function toggle_downmix()
+  local c = check_channel()
+  if c > 2 then 
+    dm_enabled = not dm_enabled
+    mp.command(push_dm(c))
+    if dm_enabled then mp.osd_message("Downmixing " .. c .. " Channels to Stereo") else mp.osd_message("Downmixing OFF") end
+  else 
+    mp.osd_message("Downmixing Disabled")
   end
 end
 
-mp.add_key_binding(nil, "toggle-eq", toggle_eq)
-mp.add_key_binding(nil, "toggle-drc", toggle_drc)
+local function init_filters()
+  local c = check_channel()
+  if eq_enabled then updateEQ() end
+  if drc_enabled then mp.command(push_drc()) end
+  if dm_enabled and c > 2 then mp.command(push_dm(c)) end
+end
 
+mp.add_key_binding('e', "toggle-eq", toggle_eq)
+mp.add_key_binding('\\', "toggle-drc", toggle_drc)
+mp.add_key_binding('E', "toggle-dm", toggle_downmix)
 init_filters() -- Initializes the filter at start
