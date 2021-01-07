@@ -2,7 +2,7 @@
 A small collection of lua scripts for use in mpv player. Refer to mpv documentation on how to use a lua script in mpv.
 
 ## afilter.lua
-Lua script for togglable customizable parametric equalizer and dynamic range compressor with more filter support coming in future.
+Lua script for togglable customizable parametric equalizer, dynamic range audio compressor and custom stereo downmixer with more filter support coming in future.
 ```
 Options:
 preamp: Set preamp to avoid clipping.
