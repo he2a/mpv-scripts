@@ -5,7 +5,6 @@ A small collection of lua scripts for use in mpv player. Refer to mpv documentat
 Lua script for togglable customizable parametric equalizer and dynamic range compressor with more filter support coming in future.
 ```
 Options:
-<<<<<<< HEAD
 preamp: Set preamp to avoid clipping.
 bands : Add {freq = <frequency>, width = {'<type>', <value>}, gain = <gain>}
         to the bands for each modification of frequency, separated by comma.
@@ -34,7 +33,6 @@ drc: Enable to compress the dynamic range of audio resulting in quieter parts
 	 threshold: Triggered if signal in dB rises above this level.
 	 
 eq_enabled : Start with equalizer enabled.
-=======
 bands: Add {freq = <frequency>, width = {'<type>', <value>}, gain = <gain>}, for each frequency.
        freq : Set the filter’s central frequency in Hz.
        width: Set the bandwidth of filter.
@@ -53,13 +51,9 @@ drc: Enable to compress the dynamic range of audio resulting in quieter parts ge
      threshold: Triggered if signal in dB rises above this level.
 	 
 eq_enabled: Start with equalizer enabled.
->>>>>>> 05a658bd406ddfcffc833f2b17ee41caa6f362bd
 drc_enabled: Start with compressor enabled.
+dm_enabled : Start with stereo downmix enabled.
 ```
 
 ## sview.lua
-<<<<<<< HEAD
 A simple script to show multiple shaders running, in a clean list. Triggered on shader activation or by toggle button.
-=======
-A simple script to show multiple shaders running, in a clean list. Triggered on shader activation or by toggle button.
->>>>>>> 05a658bd406ddfcffc833f2b17ee41caa6f362bd
