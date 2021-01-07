@@ -5,6 +5,7 @@ A small collection of lua scripts for use in mpv player. Refer to mpv documentat
 Lua script for togglable customizable parametric equalizer and dynamic range compressor with more filter support coming in future.
 ```
 Options:
+<<<<<<< HEAD
 preamp: Set preamp to avoid clipping.
 bands : Add {freq = <frequency>, width = {'<type>', <value>}, gain = <gain>}
         to the bands for each modification of frequency, separated by comma.
@@ -33,8 +34,32 @@ drc: Enable to compress the dynamic range of audio resulting in quieter parts
 	 threshold: Triggered if signal in dB rises above this level.
 	 
 eq_enabled : Start with equalizer enabled.
+=======
+bands: Add {freq = <frequency>, width = {'<type>', <value>}, gain = <gain>}, for each frequency.
+       freq : Set the filter’s central frequency in Hz.
+       width: Set the bandwidth of filter.
+              type : Set method to specify bandwidth. (h for Hz, q for Q-Factor, o for Octave, s for Slope)
+              value: Set the magnitude of the bandwidth.
+       gain : Set the required gain or attenuation in dB.
+
+preamp: Set preamp to avoid audio clipping.
+
+drc: Enable to compress the dynamic range of audio resulting in quieter parts getting louder.
+     ratio    : Ratio by which the signal is changed.
+     attack   : Amount of ms the signal has to rise above the threshold before it triggers.
+     release  : Amount of ms the signal has to fall below the threshold before it is restored.
+     makeup   : Amount in dB the signal will be amplified after processing.
+     knee     : Curve the sharp knee around threshold dB to enter gain reduction more softly. 
+     threshold: Triggered if signal in dB rises above this level.
+	 
+eq_enabled: Start with equalizer enabled.
+>>>>>>> 05a658bd406ddfcffc833f2b17ee41caa6f362bd
 drc_enabled: Start with compressor enabled.
 ```
 
 ## sview.lua
+<<<<<<< HEAD
 A simple script to show multiple shaders running, in a clean list. Triggered on shader activation or by toggle button.
+=======
+A simple script to show multiple shaders running, in a clean list. Triggered on shader activation or by toggle button.
+>>>>>>> 05a658bd406ddfcffc833f2b17ee41caa6f362bd
