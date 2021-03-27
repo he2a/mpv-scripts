@@ -1,9 +1,6 @@
 --[[
+afilter.lua : Simple lua script for toggling different inbuilt audio filters.
 
-A simple lua script for togglable equalizer, dynamic range compressor, stereo downmix and 
-other filters yet to come.
-
-Options:
 preamp: Set preamp to avoid clipping.
 bands : Add {freq = <frequency>, width = {'<type>', <value>}, gain = <gain>}
         to the bands for each modification of frequency, separated by comma.
@@ -18,7 +15,8 @@ bands : Add {freq = <frequency>, width = {'<type>', <value>}, gain = <gain>}
         value: Set the magnitude of the bandwidth
         gain : Set the required gain or attenuation in dB.
 		
-Basic example of 6 band blank equalizer.
+Basic example of 6 band blank equalizer:
+
 preamp = 0
 bands = {
   {freq = 64, width = {'o', 3.3}, gain = 0},   -- 20Hz - 200Hz
@@ -29,33 +27,28 @@ bands = {
   {freq = 12500, width = {'o', 1.3}, gain = 0} -- 8kHz - 20kHz
 }
 
-drc: Enable to compress the dynamic range of audio.
-
-	 ratio    : Ratio by which the signal is changed.
-	 attack   : Amount in ms the signal has to rise above the threshold before 
-	            it triggers.
-	 release  : Amount in ms the signal has to fall below the threshold before 
-	            it is restored.
-	 makeup   : Amount in dB the signal will be amplified after processing.
-	 knee     : Curve the sharp knee around threshold dB to enter gain reduction
-	            more softly. 
-     threshold: Triggered if signal in dB rises above this level.
+drc : Enable to compress the dynamic range of audio.
+	ratio    : Ratio by which the signal is changed.
+	attack   : Duration in ms the signal has to rise before it triggers.
+	release  : Duration in ms the signal has to fall before it is restored.
+	makeup   : Amount in dB the signal will be amplified after processing.
+	knee     : Curve knee around threshold to enter reduction more softly. 
+    threshold: Triggered if signal in dB rises above this level.
 	 
-nor: Enable to dynamically normalize the loudness of audio.
-
-	 frame    : Size of audio sample frame in ms.
-	 gauss    : Number of sample frames to be analyzed. Must be an odd number.
-				Eg. 11 means 5 previous + 5 next + 1 current frame.
-	 ratio    : Ratio by which the signal is changed.
-	 maxgain  : Maximum gain in volume.
-     minthres : Triggered if signal rises above this level.
+nor : Enable to dynamically normalize the loudness of audio.
+	frame    : Size of audio sample frame in ms.
+	gauss    : Number of sample frames to be analyzed. Must be an odd number.
+			   Eg. 11 means 5 previous + 5 next + 1 current frame.
+	ratio    : Ratio by which the signal is changed.
+	maxgain  : Maximum gain in volume.
+    minthres : Triggered if signal rises above this level.
 	 
 eq_enabled : Start with equalizer enabled.
 dc_enabled : Start with compressor enabled.
-dc_enabled : Start with normalizer enabled.
+dn_enabled : Start with normalizer enabled.
 dm_enabled : Start with stereo downmix enabled.
 
-Personal settings for reference.
+----------- Example -----------
 
 preamp = -0.7
 bands = {
@@ -144,7 +137,7 @@ function check_channel()
   end
 end
 
-local function push_preamp()
+local function push_vo()
   if eq_tog then 
     return 'no-osd af add volume=volume=' .. preamp .. 'dB:precision=fixed'
   else
@@ -160,7 +153,7 @@ local function push_eq(filter)
   end
 end
 
-local function push_drc()
+local function push_dc()
   if dc_tog then
     return 'no-osd af add acompressor=threshold=' .. drc.threshold .. 'dB:ratio=' .. drc.ratio .. ':attack=' .. drc.attack .. ':release=' .. drc.release .. ':makeup=' .. drc.makeup .. 'dB:knee=' .. drc.knee .. 'dB'
   else
@@ -168,7 +161,7 @@ local function push_drc()
   end
 end
 
-local function push_dnm()
+local function push_dn()
   if dn_tog then
     return 'no-osd af add dynaudnorm=f=' .. nor.frame .. ':g=' .. nor.gauss .. ':m=' .. nor.ratio .. ':p=' .. nor.maxgain .. ':t=' .. nor.minthres
   else
@@ -202,7 +195,7 @@ local function push_dm(chn)
 end
 
 local function updateEQ()
-  if preamp ~= 0 then mp.command(push_preamp()) end
+  if preamp ~= 0 then mp.command(push_vo()) end
   for i = 1, #bands do
     local f = bands[i]
     if f.gain ~= 0 then
@@ -213,13 +206,13 @@ end
 
 local function toggle_drc()
   dc_tog = not dc_tog
-  mp.command(push_drc())
+  mp.command(push_dc())
   if dc_tog then mp.osd_message("Dynamic Compressor ON") else mp.osd_message("Dynamic Compressor OFF") end
 end
 
 local function toggle_dnm()
   dn_tog = not dn_tog
-  mp.command(push_dnm())
+  mp.command(push_dn())
   if dn_tog then mp.osd_message("Dynamic Normalizer ON") else mp.osd_message("Dynamic Normalizer OFF") end
 end
 
@@ -257,8 +250,8 @@ local function init_filters()
   dc_tog = dc_enabled
   dn_tog = dn_enabled
   
-  if dc_tog then mp.command(push_drc()) end
-  if dn_tog then mp.command(push_dnm()) end
+  if dc_tog then mp.command(push_dc()) end
+  if dn_tog then mp.command(push_dn()) end
   if dm_enabled then mp.observe_property('audio-params/channel-count', nil, init_channel) end
   if eq_tog then updateEQ() end
 end
@@ -270,8 +263,8 @@ local function deinit_filters()
   dm_tog = false
   
   updateEQ()
-  mp.command(push_drc())
-  mp.command(push_dnm())
+  mp.command(push_dc())
+  mp.command(push_dn())
   mp.command(push_dm(deinit_chn))
   deinit_chn = -1
 end
