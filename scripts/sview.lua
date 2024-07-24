@@ -7,7 +7,7 @@ function slist(input)
     local fileNames = {}
     local paths = {}
 	if input ~= '' then
-		for path in input:gmatch("[^,]+") do
+		for path in input:gmatch("[^;]+") do
 			table.insert(paths, path)
 		end
 
@@ -20,7 +20,7 @@ function slist(input)
 		
 		local listString = "{\\b1}Shaders loaded:{\\b0}"
 		for i, fileName in ipairs(fileNames) do
-			listString = listString .. "\n" .. i .. ") " .. fileName
+			listString = listString .. "\n" .. i .. "❯ " .. fileName
 		end
 		sview_ov.data = listString
 	else
