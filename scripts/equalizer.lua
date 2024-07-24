@@ -101,7 +101,7 @@ local function type_check()
 end
 
 local function type_compare(a, b)
-  if (a == 'blank') or (a == b) then
+  if (a == 'allav') or (a == b) then
     return true
   elseif (a == 'video') and (b == 'movie') then
     return true

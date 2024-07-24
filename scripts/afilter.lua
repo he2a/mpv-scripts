@@ -103,7 +103,7 @@ local function type_check()
 end
 
 local function type_compare(w_list, m_type)
-  if (w_list == 'blank') or (w_list == m_type) then
+  if (w_list == 'allav') or (w_list == m_type) then
     return true
   elseif (w_list == 'audio') and (m_type == 'audmc') then
     return true
