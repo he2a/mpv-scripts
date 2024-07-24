@@ -94,4 +94,4 @@ To set the equalizer, you can edit the `default.csv` file in `./script-opts/equa
 - `gain` - Set the required gain or attenuation in dB.
 
 ## sview.lua
-A simple script to show multiple shaders running, in a clean list. Triggered on shader activation or by toggle button.
+A lightweight script that displays all loaded shaders in a clean format. It suppresses the default OSD message, allowing the list of loaded shaders to be viewed by toggling it.
