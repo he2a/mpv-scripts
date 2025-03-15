@@ -1,3 +1,5 @@
+-- Flexible multi band parametric equalizer with format similar to EqualizerAPO.
+
 local mp = require 'mp'
 local utils = require 'mp.utils'
 local msg = require 'mp.msg'
