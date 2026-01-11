@@ -1,3 +1,4 @@
+-- Deprecated, use aftoys.lua instead which has both the functionality of afilter and equalizer.
 -- Flexible multi band parametric equalizer with format similar to EqualizerAPO.
 
 local mp = require 'mp'

@@ -1,3 +1,4 @@
+-- Deprecated, use aftoys.lua instead which has both the functionality of afilter and equalizer.
 -- Collection of configurable audio filters for audio compression, normalization and HRTF.
 
 local mp = require 'mp'

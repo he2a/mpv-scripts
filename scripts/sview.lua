@@ -1,5 +1,4 @@
 -- A simple script to show multiple shaders running, in a clean list.
-
 local mp = require 'mp'
 local utils = require 'mp.utils'
 local msg = require 'mp.msg'
@@ -59,8 +58,8 @@ function slist(input)
 
 		local listString = "{\\r\\b1}Shaders Loaded{\\b0\\fscx75\\fscy75}\\N"
 		
-		for i, fileName in ipairs(shaderName) do
-			listString = listString .. inlnCond(show_num,i .. "\\h",'') .. list_sym .. "\\h" .. fileName .. "\\N"
+		for i, sName in ipairs(shaderName) do
+			listString = listString .. inlnCond(show_num,i .. "\\h",'') .. list_sym .. "\\h" .. sName .. "\\N"
 		end
 		
 		sview_ov.data = listString
@@ -87,6 +86,7 @@ delay_start = mp.add_periodic_timer(delay_tm,
 
 delay_update = mp.add_periodic_timer(flash_tm, 
 	function()
+		shader_t = false
 		sview_ov:remove()
 		delay_update:kill()
 	end, true)
@@ -114,25 +114,25 @@ mp.add_key_binding(nil, 'shader-clear', clear_shaders)
 
 mp.register_event("end-file", 
 	function()
-		if delay_start:is_enabled() then 
+		if delay_start:is_enabled() then
 			delay_start:kill()
 		end
+		reactive_sview = false
 	end)
 
 mp.register_event("start-file", 
 	function()
 		reactive_sview = false
+		shader_t = false
 		sview_ov:remove()
 	end)
 
 mp.register_event("file-loaded", 
 	function()
-		if not delay_start:is_enabled() then 
-			delay_start:resume() 
-		else
+		if delay_start:is_enabled() then 
 			delay_start:kill()
-			delay_start:resume() 
 		end
+		delay_start:resume() 
 	end)
 
 mp.observe_property('glsl-shaders', nil, update_list)
