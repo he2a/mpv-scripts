@@ -1,6 +1,9 @@
 # mpv-scripts
 A small collection of lua scripts for use in mpv player. Refer to mpv documentation on how to use a lua script in mpv.
 
+## afilter.lua & equalizer.lua
+These filters have been updated and combined with new whitelist system to become **aftoys.lua**. The relevant files related to afilter and equalizer can be found in `script` and `script-opts` folders respectively for legacy purpose.
+
 ## aftoys.lua
 Lua script for easy access to certain audio filters in mpv. Settings are located in `aftoys.conf` in `./script-opts` folder, SOFA files are located in `./script-opts/sofa` folder and equalizer files are stored in `./script-opts/equalizer` by default.
 
